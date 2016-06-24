@@ -156,6 +156,102 @@ public class DataPoint {
 		return PPE;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setMDVP_Fo_Hz(double mDVP_Fo_Hz) {
+		MDVP_Fo_Hz = mDVP_Fo_Hz;
+	}
+
+	public void setMDVP_Fhi_Hz(double mDVP_Fhi_Hz) {
+		MDVP_Fhi_Hz = mDVP_Fhi_Hz;
+	}
+
+	public void setMDVP_Flo_Hz(double mDVP_Flo_Hz) {
+		MDVP_Flo_Hz = mDVP_Flo_Hz;
+	}
+
+	public void setMDVP_Jitter_percent(double mDVP_Jitter_percent) {
+		MDVP_Jitter_percent = mDVP_Jitter_percent;
+	}
+
+	public void setMDVP_Jitter_abs(double mDVP_Jitter_abs) {
+		MDVP_Jitter_abs = mDVP_Jitter_abs;
+	}
+
+	public void setMDVP_RAP(double mDVP_RAP) {
+		MDVP_RAP = mDVP_RAP;
+	}
+
+	public void setMDVP_PPQ(double mDVP_PPQ) {
+		MDVP_PPQ = mDVP_PPQ;
+	}
+
+	public void setJitter_DDP(double jitter_DDP) {
+		Jitter_DDP = jitter_DDP;
+	}
+
+	public void setMDVP_Shimmer(double mDVP_Shimmer) {
+		MDVP_Shimmer = mDVP_Shimmer;
+	}
+
+	public void setMDVP_Shimmer_dB(double mDVP_Shimmer_dB) {
+		MDVP_Shimmer_dB = mDVP_Shimmer_dB;
+	}
+
+	public void setShimmer_APQ3(double shimmer_APQ3) {
+		Shimmer_APQ3 = shimmer_APQ3;
+	}
+
+	public void setShimmer_APQ5(double shimmer_APQ5) {
+		Shimmer_APQ5 = shimmer_APQ5;
+	}
+
+	public void setMDVP_APQ(double mDVP_APQ) {
+		MDVP_APQ = mDVP_APQ;
+	}
+
+	public void setShimmer_DDA(double shimmer_DDA) {
+		Shimmer_DDA = shimmer_DDA;
+	}
+
+	public void setNHR(double nHR) {
+		NHR = nHR;
+	}
+
+	public void setHNR(double hNR) {
+		HNR = hNR;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public void setRPDE(double rPDE) {
+		RPDE = rPDE;
+	}
+
+	public void setDFA(double dFA) {
+		DFA = dFA;
+	}
+
+	public void setSpread1(double spread1) {
+		this.spread1 = spread1;
+	}
+
+	public void setSpread2(double spread2) {
+		this.spread2 = spread2;
+	}
+
+	public void setD2(double d2) {
+		D2 = d2;
+	}
+
+	public void setPPE(double pPE) {
+		PPE = pPE;
+	}
+
 	@Override
 	public String toString() {
 		return "DataPoint [name=" + name + ", MDVP_Fo_Hz=" + MDVP_Fo_Hz
@@ -170,6 +266,13 @@ public class DataPoint {
 				+ ", NHR=" + NHR + ", HNR=" + HNR + ", status=" + status
 				+ ", RPDE=" + RPDE + ", DFA=" + DFA + ", spread1=" + spread1
 				+ ", spread2=" + spread2 + ", D2=" + D2 + ", PPE=" + PPE + "]";
+	}
+	
+	public double[] toArray() {
+		double[] vars = {MDVP_Fo_Hz,MDVP_Fhi_Hz,MDVP_Flo_Hz,MDVP_Jitter_percent,MDVP_Jitter_abs,MDVP_RAP,MDVP_PPQ,Jitter_DDP,MDVP_Shimmer,MDVP_Shimmer_dB,
+		     			Shimmer_APQ3,Shimmer_APQ5,MDVP_APQ,Shimmer_DDA,NHR,HNR,RPDE,DFA,spread1,spread2,D2,PPE}; 
+		return vars; 
+		
 	}
 	
 }
