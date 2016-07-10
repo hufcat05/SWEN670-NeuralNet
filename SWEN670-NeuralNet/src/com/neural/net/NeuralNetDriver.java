@@ -49,7 +49,7 @@ public class NeuralNetDriver {
 		percentFormat.setMinimumFractionDigits(4);
 
 
-		for (int i=0;i<600;i++) {
+		for (int i=0;i<10000;i++) {
 			for (int j=0;j<dataPoints.size();j++) {
 				network.computeOutputs(dataPoints.get(j).toArray());
 				network.calcError(expectedStatus.get(j));
@@ -57,8 +57,9 @@ public class NeuralNetDriver {
 			}
 			
 			if (i % 100 == 0){
-			System.out.println( "Trial #" + i + ",Error:" +
+				System.out.println( "Trial #" + i + ",Error:" +
 	             percentFormat .format(network.getError(dataPoints.size())) );
+				
 			}
 	  }
 		
