@@ -1,17 +1,5 @@
 package com.neural.net;
 
-/**
- * Neural Network
- * Feedforward Backpropagation Neural Network
- * Written in 2002 by Jeff Heaton(http://www.jeffheaton.com)
- *
- * This class is released under the limited GNU public
- * license (LGPL).
- *
- * @author Jeff Heaton
- * @version 1.0
- */
-
 public class Network {
 
  /**
