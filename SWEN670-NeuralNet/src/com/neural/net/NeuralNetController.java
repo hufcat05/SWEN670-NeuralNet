@@ -1,15 +1,11 @@
 package com.neural.net;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
+import com.neural.net.gui.NeuralInterface;
 import com.neural.net.model.DataPoint;
 import com.neural.net.parser.DataParser;
 
@@ -25,8 +21,7 @@ public class NeuralNetController {
 		expectedStatus = new ArrayList<double[]>();
 	}
 	
-	public void initializeTraining(File trainingData) throws Exception{
-		
+	public void initializeTraining(File trainingData, NeuralInterface ui) throws Exception{
 		NumberFormat percentFormat = NumberFormat.getPercentInstance();
 		percentFormat.setMinimumFractionDigits(4);
 		
@@ -47,11 +42,13 @@ public class NeuralNetController {
 			}
 			
 			if (i % 100 == 0){
+				ui.updateStatusBar(i/100);
 				System.out.println( "Trial #" + i + ",Error:" +
 	             percentFormat .format(network.getError(trainingDataPoints.size())) );
 				
 			}
 		}
+		ui.updateStatusBar(0);
 		
 		DataPoint oneDataPoint = null;
 		DataPoint zeroDataPoint = null;

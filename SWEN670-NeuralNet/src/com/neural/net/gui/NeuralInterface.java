@@ -9,6 +9,8 @@ import java.io.File;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+import javax.swing.SwingWorker;
+import javax.swing.table.DefaultTableModel;
 
 import com.neural.net.NeuralNetController;
 import com.neural.net.model.DataPoint;
@@ -20,6 +22,7 @@ import com.neural.net.model.DataPoint;
 public class NeuralInterface extends javax.swing.JFrame {
 	
 	private static NeuralNetController controller;
+	private NeuralInterface ui = this;
     /**
      * Creates new form NeuralInterface
      */
@@ -41,6 +44,10 @@ public class NeuralInterface extends javax.swing.JFrame {
         btnTrain = new javax.swing.JButton();
         btnProcess = new javax.swing.JButton();
         lblTitle = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        outputTable = new javax.swing.JTable();
+        trainingStatusBar = new javax.swing.JProgressBar();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,70 +79,122 @@ public class NeuralInterface extends javax.swing.JFrame {
         lblTitle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblTitle.setText("Neural Network Java Implementation 1.0");
 
+        outputTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
+                "Name", "Expected Result", "Network Output"
+            }
+        ));
+        jScrollPane1.setViewportView(outputTable);
+
+        trainingStatusBar.setVisible(false);
+
+        jLabel1.setText("Network Output");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnProcess)
-                    .addComponent(btnTrain)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblStatusHead)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblStatusData)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addGap(96, 96, 96)
                 .addComponent(lblTitle)
-                .addGap(37, 37, 37))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblStatusHead)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblStatusData)
+                                .addGap(18, 18, 18)
+                                .addComponent(trainingStatusBar, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnTrain)
+                                .addGap(34, 34, 34)
+                                .addComponent(btnProcess))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblStatusHead)
+                            .addComponent(lblStatusData)))
+                    .addComponent(trainingStatusBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStatusHead)
-                    .addComponent(lblStatusData))
-                .addGap(47, 47, 47)
-                .addComponent(btnTrain)
-                .addGap(36, 36, 36)
-                .addComponent(btnProcess)
-                .addGap(28, 28, 28))
+                    .addComponent(btnTrain)
+                    .addComponent(btnProcess))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTrainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTrainMouseClicked
-        // TODO add your handling code here:
-        JFileChooser trainFile = new JFileChooser();
-        trainFile.setDialogTitle("Choose a training file.");
+// TODO add your handling code here:
         
-        int returnVal = trainFile.showOpenDialog(NeuralInterface.this);
-        
-        if (returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            File file = trainFile.getSelectedFile();
+        SwingWorker<String, Object> worker = new SwingWorker<String, Object>() {
+            @Override
+            protected String doInBackground() throws Exception {                
+            	 JFileChooser trainFile = new JFileChooser();
+                 trainFile.setDialogTitle("Choose a training file.");
+                 
+                 int returnVal = trainFile.showOpenDialog(NeuralInterface.this);
+                 
+                 if (returnVal == JFileChooser.APPROVE_OPTION)
+                 {
+                     
+                     File file = trainFile.getSelectedFile();
 
-            try
-            {
-            	lblStatusData.setText("Training.");
-               controller.initializeTraining(file);
+                     try
+                     {
+                    	 lblStatusData.setText("Training...");
+                    	 trainingStatusBar.setVisible(true);
+                        controller.initializeTraining(file, ui);
+                     }
+                     catch(Exception ex)
+                     {
+                        
+                     }
+                     
+                     trainingStatusBar.setVisible(false);
+                     lblStatusData.setText("Ready to Process.");
+                     btnProcess.setEnabled(true);
+                     
+                     
+                 } else {
+                     lblStatusData.setText("Ready to Train");
+                 }
+                 return "";
             }
-            catch(Exception ex)
-            {
-                //Not a data file!
-                return;
+            @Override
+            protected void done() {
+                try {
+                    
+                } catch (Exception e) {
+                    //ignore
+                }
             }
-            
-     
-            lblStatusData.setText("Ready to Process.");
-            btnProcess.setEnabled(true);
-            
-        }
+        };      
+        worker.execute();
+       
             
         
         
@@ -158,10 +217,16 @@ public class NeuralInterface extends javax.swing.JFrame {
              {
                  List<DataPoint> outputDataPoints = controller.processInput(inputFile);
                  
-                 for (DataPoint point : outputDataPoints){
-                	 System.out.println("Name: " + point.getName() + " - Expected: " + point.getStatus());
-                	 System.out.println("Name: " + point.getName() + " - Result: " + point.getResult());
-                 }
+                 DefaultTableModel model = ((DefaultTableModel)outputTable.getModel());
+                 
+                  int rowCount = model.getRowCount();
+                    //Remove rows one by one from the end of the table
+                    for (int i = rowCount - 1; i >= 0; i--) {
+                        model.removeRow(i);
+                    }
+                    for (DataPoint point : outputDataPoints){
+                        model.addRow(new Object[]{point.getName(),point.getStatus(), point.getResult()});
+                    }
              }
              catch(Exception ex)
              {
@@ -179,7 +244,15 @@ public class NeuralInterface extends javax.swing.JFrame {
         lblStatusData.setText("Ready To Process.");
         
     }//GEN-LAST:event_btnProcessMouseClicked
-
+    
+    
+    public void updateStatusBar(int value){
+    	trainingStatusBar.setValue(value);
+    }
+    
+    public void showStatusBar(boolean value){
+    	trainingStatusBar.setVisible(value);
+    }
     /**
      * @param args the command line arguments
      */
@@ -219,8 +292,12 @@ public class NeuralInterface extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnProcess;
     private javax.swing.JButton btnTrain;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblStatusData;
     private javax.swing.JLabel lblStatusHead;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JTable outputTable;
+    private javax.swing.JProgressBar trainingStatusBar;
     // End of variables declaration//GEN-END:variables
 }
