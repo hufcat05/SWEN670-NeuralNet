@@ -25,6 +25,7 @@ public class DataPoint {
 	private double spread2;
 	private double D2;
 	private double PPE;
+	private double result;
 	
 	public DataPoint(String name, double mDVP_Fo_Hz, double mDVP_Fhi_Hz,
 			double mDVP_Flo_Hz, double mDVP_Jitter_percent,
@@ -251,6 +252,14 @@ public class DataPoint {
 	public void setPPE(double pPE) {
 		PPE = pPE;
 	}
+	
+	public void setResult(double result) {
+		this.result = result;
+	}
+	
+	public double getResult(){
+		return result;
+	}
 
 	@Override
 	public String toString() {
@@ -265,7 +274,7 @@ public class DataPoint {
 				+ ", MDVP_APQ=" + MDVP_APQ + ", Shimmer_DDA=" + Shimmer_DDA
 				+ ", NHR=" + NHR + ", HNR=" + HNR + ", status=" + status
 				+ ", RPDE=" + RPDE + ", DFA=" + DFA + ", spread1=" + spread1
-				+ ", spread2=" + spread2 + ", D2=" + D2 + ", PPE=" + PPE + "]";
+				+ ", spread2=" + spread2 + ", D2=" + D2 + ", PPE=" + PPE + ", result=" + result + "]";
 	}
 	
 	public double[] toArray() {

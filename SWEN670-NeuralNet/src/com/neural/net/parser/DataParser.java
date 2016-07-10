@@ -61,7 +61,7 @@ public class DataParser {
 		return dataPoint;
 	}
 	
-	public static List<DataPoint> normalizeData(List<DataPoint> dataPoints){
+	public static List<DataPoint> normalizeData(List<DataPoint> baseDataPoints, List<DataPoint> outputDataPoints){
 		
  		double maxMDVP_Fo_Hz = 0;
  		double minMDVP_Fo_Hz = 500000000;
@@ -109,7 +109,7 @@ public class DataParser {
  		double minPPE = 5000000;
  		
  		
-		for (DataPoint point : dataPoints){
+		for (DataPoint point : baseDataPoints){
 			maxD2 = checkMax(point.getD2(), maxD2);
 			minD2 = checkMin(point.getD2(), minD2);
 			
@@ -177,7 +177,7 @@ public class DataParser {
 			minspread2 = checkMin(point.getSpread2(), minspread2);
 		}
 		
-		for (DataPoint point : dataPoints){
+		for (DataPoint point : outputDataPoints){
 			point.setD2(normalize(point.getD2(), minD2, maxD2));
 			point.setDFA(normalize(point.getDFA(), minDFA, maxDFA));
 			point.setHNR(normalize(point.getHNR(), minHNR, maxHNR));
@@ -202,7 +202,7 @@ public class DataParser {
 			point.setSpread2(normalize(point.getSpread2(), minspread2, maxspread2));
 		}
 		
-		return dataPoints;
+		return outputDataPoints;
 	}
 	
 	public static double normalize(double value, double min, double max){
