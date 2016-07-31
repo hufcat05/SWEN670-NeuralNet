@@ -49,39 +49,6 @@ public class NeuralNetController {
 			}
 		}
 		ui.updateStatusBar(0);
-		
-		DataPoint oneDataPoint = null;
-		DataPoint zeroDataPoint = null;
-		
-		for (DataPoint dataPoint : trainingDataPoints){
-			if (dataPoint.getStatus() == 1){
-				oneDataPoint = dataPoint;
-			} else if (dataPoint.getStatus() == 0){
-				zeroDataPoint = dataPoint;
-			}
-		}
-		
-		System.out.println("Recall:" );
-		double[] output = network.computeOutputs(oneDataPoint.toArray());
-		System.out.println("Result: " + output[0]);
-		System.out.println("Expected: " + oneDataPoint.getStatus());
-		output = network.computeOutputs(zeroDataPoint.toArray());
-		System.out.println("Result: " + output[0]);
-		System.out.println("Expected: " + zeroDataPoint.getStatus());
-		
-		System.out.println("-----");
-		
-		List<DataPoint> test = DataParser.parseDataFile(new File("C:\\Users\\hufcat05\\Documents\\input-data.csv"));
-		List<DataPoint> fullSet = new ArrayList<DataPoint>();
-		fullSet.addAll(originalTrainingDataPoints);
-		fullSet.addAll(test);
-		test = DataParser.normalizeData(fullSet, test);
-		
-		for (DataPoint point : test){
-			double[] testOut = network.computeOutputs(point.toArray());
-			System.out.println("Result: " + testOut[0]);
-			System.out.println("Expected: " + point.getStatus());
-		}
 	}
 	
 	public List<DataPoint> processInput(File inputData){

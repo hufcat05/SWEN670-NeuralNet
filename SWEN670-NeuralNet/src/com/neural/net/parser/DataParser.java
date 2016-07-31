@@ -24,7 +24,9 @@ public class DataParser {
 			while ((line = br.readLine()) != null) {
 
 			  DataPoint dataPoint = parseDataString(line);
-			  dataPoints.add(dataPoint);
+			  if (dataPoint != null){
+				  dataPoints.add(dataPoint);
+			  }
 			}
 
 		} catch (FileNotFoundException e) {
@@ -47,18 +49,21 @@ public class DataParser {
 	public static DataPoint parseDataString(String data){
 		String[] dataArray = data.split(",");
 		
-		DataPoint dataPoint = DataPointFactory.generateDataPoint(dataArray[0], Double.parseDouble(dataArray[1]), 
-				Double.parseDouble(dataArray[2]), Double.parseDouble(dataArray[3]), Double.parseDouble(dataArray[4]),
-				Double.parseDouble(dataArray[5]), Double.parseDouble(dataArray[6]), Double.parseDouble(dataArray[7]),
-				Double.parseDouble(dataArray[8]), Double.parseDouble(dataArray[9]), Double.parseDouble(dataArray[10]),
-				Double.parseDouble(dataArray[11]), Double.parseDouble(dataArray[12]), Double.parseDouble(dataArray[13]),
-				Double.parseDouble(dataArray[14]), Double.parseDouble(dataArray[15]), Double.parseDouble(dataArray[16]),
-				Integer.parseInt(dataArray[17]), Double.parseDouble(dataArray[18]), Double.parseDouble(dataArray[19]),
-				Double.parseDouble(dataArray[20]), Double.parseDouble(dataArray[21]), Double.parseDouble(dataArray[22]),
-				Double.parseDouble(dataArray[23]));
-		
-		
-		return dataPoint;
+		try {
+			DataPoint dataPoint = DataPointFactory.generateDataPoint(dataArray[0], Double.parseDouble(dataArray[1]), 
+					Double.parseDouble(dataArray[2]), Double.parseDouble(dataArray[3]), Double.parseDouble(dataArray[4]),
+					Double.parseDouble(dataArray[5]), Double.parseDouble(dataArray[6]), Double.parseDouble(dataArray[7]),
+					Double.parseDouble(dataArray[8]), Double.parseDouble(dataArray[9]), Double.parseDouble(dataArray[10]),
+					Double.parseDouble(dataArray[11]), Double.parseDouble(dataArray[12]), Double.parseDouble(dataArray[13]),
+					Double.parseDouble(dataArray[14]), Double.parseDouble(dataArray[15]), Double.parseDouble(dataArray[16]),
+					Integer.parseInt(dataArray[17]), Double.parseDouble(dataArray[18]), Double.parseDouble(dataArray[19]),
+					Double.parseDouble(dataArray[20]), Double.parseDouble(dataArray[21]), Double.parseDouble(dataArray[22]),
+					Double.parseDouble(dataArray[23]));
+			
+			return dataPoint;
+		} catch (NumberFormatException ex){
+			return null;
+		}
 	}
 	
 	public static List<DataPoint> normalizeData(List<DataPoint> baseDataPoints, List<DataPoint> outputDataPoints){

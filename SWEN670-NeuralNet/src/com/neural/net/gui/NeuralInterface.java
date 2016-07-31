@@ -5,7 +5,9 @@
  */
 package com.neural.net.gui;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -209,32 +211,57 @@ public class NeuralInterface extends javax.swing.JFrame {
         int returnVal = dataFile.showOpenDialog(NeuralInterface.this);   
         
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-        	File inputFile = dataFile.getSelectedFile();
         	
-        	 lblStatusData.setText("Processing.");
-             
-             try //to process
-             {
-                 List<DataPoint> outputDataPoints = controller.processInput(inputFile);
-                 
-                 DefaultTableModel model = ((DefaultTableModel)outputTable.getModel());
-                 
-                  int rowCount = model.getRowCount();
-                    //Remove rows one by one from the end of the table
-                    for (int i = rowCount - 1; i >= 0; i--) {
-                        model.removeRow(i);
-                    }
-                    for (DataPoint point : outputDataPoints){
-                        model.addRow(new Object[]{point.getName(),point.getStatus(), point.getResult()});
-                    }
-             }
-             catch(Exception ex)
-             {
-                 
-                 //when done, pass or fail, reset label
-                 lblStatusData.setText("Ready To Process.");
-             }
-             
+        	JFileChooser outputFile = new JFileChooser();
+            outputFile.setDialogTitle("Choose a data file to process.");
+            
+            int outputReturn = outputFile.showSaveDialog(NeuralInterface.this);
+            
+            if (outputReturn == JFileChooser.APPROVE_OPTION){
+          
+            	File output = outputFile.getSelectedFile();
+	        	File inputFile = dataFile.getSelectedFile();
+	        	
+	        	// if file doesnt exists, then create it
+				
+				
+	        	 lblStatusData.setText("Processing.");
+	             
+	             try //to process
+	             {
+	            	if (!output.exists()) {
+	 					output.createNewFile();
+	 				}
+
+					FileWriter fw = new FileWriter(output.getAbsoluteFile());
+					BufferedWriter bw = new BufferedWriter(fw);
+					
+					bw.write("Name, Expected Result, Network Result");
+					bw.newLine();
+					
+					List<DataPoint> outputDataPoints = controller.processInput(inputFile);
+					 
+					DefaultTableModel model = ((DefaultTableModel)outputTable.getModel());
+					 
+					int rowCount = model.getRowCount();
+					    //Remove rows one by one from the end of the table
+					for (int i = rowCount - 1; i >= 0; i--) {
+					    model.removeRow(i);
+					}
+					for (DataPoint point : outputDataPoints){
+					    model.addRow(new Object[]{point.getName(),point.getStatus(), point.getResult()});
+					    bw.write(point.getName() + ", " + point.getStatus() + ", " + point.getResult());
+					    bw.newLine();
+					}
+					bw.close();
+	             }
+	             catch(Exception ex)
+	             {
+	                 
+	                 //when done, pass or fail, reset label
+	                 lblStatusData.setText("Ready To Process.");
+	             }
+            }  
         }
       
         //if it parses, start processing
