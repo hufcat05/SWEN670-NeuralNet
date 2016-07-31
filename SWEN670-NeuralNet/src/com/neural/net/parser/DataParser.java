@@ -13,7 +13,7 @@ import com.neural.net.model.DataPointFactory;
 
 public class DataParser {
 	
-	public static List<DataPoint> parseDataFile(File file){
+	public static List<DataPoint> parseDataFile(File file) throws Exception{
 		List<DataPoint> dataPoints = new ArrayList<DataPoint>();
 		BufferedReader br = null;
 		String line = "";
@@ -46,23 +46,22 @@ public class DataParser {
 		return dataPoints;
 	}
 	
-	public static DataPoint parseDataString(String data){
+	public static DataPoint parseDataString(String data) throws Exception{
 		String[] dataArray = data.split(",");
-		
-		try {
+		if (dataArray.length == 24){
 			DataPoint dataPoint = DataPointFactory.generateDataPoint(dataArray[0], Double.parseDouble(dataArray[1]), 
-					Double.parseDouble(dataArray[2]), Double.parseDouble(dataArray[3]), Double.parseDouble(dataArray[4]),
-					Double.parseDouble(dataArray[5]), Double.parseDouble(dataArray[6]), Double.parseDouble(dataArray[7]),
-					Double.parseDouble(dataArray[8]), Double.parseDouble(dataArray[9]), Double.parseDouble(dataArray[10]),
-					Double.parseDouble(dataArray[11]), Double.parseDouble(dataArray[12]), Double.parseDouble(dataArray[13]),
-					Double.parseDouble(dataArray[14]), Double.parseDouble(dataArray[15]), Double.parseDouble(dataArray[16]),
-					Integer.parseInt(dataArray[17]), Double.parseDouble(dataArray[18]), Double.parseDouble(dataArray[19]),
-					Double.parseDouble(dataArray[20]), Double.parseDouble(dataArray[21]), Double.parseDouble(dataArray[22]),
-					Double.parseDouble(dataArray[23]));
-			
+			Double.parseDouble(dataArray[2]), Double.parseDouble(dataArray[3]), Double.parseDouble(dataArray[4]),
+			Double.parseDouble(dataArray[5]), Double.parseDouble(dataArray[6]), Double.parseDouble(dataArray[7]),
+			Double.parseDouble(dataArray[8]), Double.parseDouble(dataArray[9]), Double.parseDouble(dataArray[10]),
+			Double.parseDouble(dataArray[11]), Double.parseDouble(dataArray[12]), Double.parseDouble(dataArray[13]),
+			Double.parseDouble(dataArray[14]), Double.parseDouble(dataArray[15]), Double.parseDouble(dataArray[16]),
+			Integer.parseInt(dataArray[17]), Double.parseDouble(dataArray[18]), Double.parseDouble(dataArray[19]),
+			Double.parseDouble(dataArray[20]), Double.parseDouble(dataArray[21]), Double.parseDouble(dataArray[22]),
+			Double.parseDouble(dataArray[23]));
+				
 			return dataPoint;
-		} catch (NumberFormatException ex){
-			return null;
+		} else {
+			throw new Exception();
 		}
 	}
 	

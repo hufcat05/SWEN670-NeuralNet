@@ -11,7 +11,10 @@ import java.io.FileWriter;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import com.neural.net.NeuralNetController;
@@ -25,6 +28,8 @@ public class NeuralInterface extends javax.swing.JFrame {
 	
 	private static NeuralNetController controller;
 	private NeuralInterface ui = this;
+	
+	FileFilter filter = new FileNameExtensionFilter("CSV", "csv");
     /**
      * Creates new form NeuralInterface
      */
@@ -154,9 +159,11 @@ public class NeuralInterface extends javax.swing.JFrame {
         
         SwingWorker<String, Object> worker = new SwingWorker<String, Object>() {
             @Override
-            protected String doInBackground() throws Exception {                
+            protected String doInBackground() throws Exception {   
+            	 boolean success = true;
             	 JFileChooser trainFile = new JFileChooser();
                  trainFile.setDialogTitle("Choose a training file.");
+                 trainFile.setFileFilter(filter);
                  
                  int returnVal = trainFile.showOpenDialog(NeuralInterface.this);
                  
@@ -173,12 +180,18 @@ public class NeuralInterface extends javax.swing.JFrame {
                      }
                      catch(Exception ex)
                      {
-                        
+                        JOptionPane.showMessageDialog(null, "The input file must be properly formatted");
+                        success = false;
                      }
                      
                      trainingStatusBar.setVisible(false);
-                     lblStatusData.setText("Ready to Process.");
-                     btnProcess.setEnabled(true);
+                     if (success){
+                    	 lblStatusData.setText("Ready to Process.");
+                    	 btnProcess.setEnabled(true);
+                     } else {
+                    	 lblStatusData.setText("Ready to Train");
+                     }
+                    
                      
                      
                  } else {
@@ -203,17 +216,17 @@ public class NeuralInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTrainMouseClicked
 
     private void btnProcessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProcessMouseClicked
-        
+        if (btnProcess.isEnabled()){
         JFileChooser dataFile = new JFileChooser();
         dataFile.setDialogTitle("Choose a data file to process.");
-      
+        dataFile.setFileFilter(filter);
         
         int returnVal = dataFile.showOpenDialog(NeuralInterface.this);   
         
         if (returnVal == JFileChooser.APPROVE_OPTION) {
         	
         	JFileChooser outputFile = new JFileChooser();
-            outputFile.setDialogTitle("Choose a data file to process.");
+            outputFile.setDialogTitle("Choose the name of the output file.");
             
             int outputReturn = outputFile.showSaveDialog(NeuralInterface.this);
             
@@ -257,7 +270,7 @@ public class NeuralInterface extends javax.swing.JFrame {
 	             }
 	             catch(Exception ex)
 	             {
-	                 
+	                 JOptionPane.showMessageDialog(null, "The input file must be properly formatted");
 	                 //when done, pass or fail, reset label
 	                 lblStatusData.setText("Ready To Process.");
 	             }
@@ -269,7 +282,7 @@ public class NeuralInterface extends javax.swing.JFrame {
        
         //successful process.
         lblStatusData.setText("Ready To Process.");
-        
+        }  
     }//GEN-LAST:event_btnProcessMouseClicked
     
     

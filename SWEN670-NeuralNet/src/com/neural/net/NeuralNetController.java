@@ -51,7 +51,7 @@ public class NeuralNetController {
 		ui.updateStatusBar(0);
 	}
 	
-	public List<DataPoint> processInput(File inputData){
+	public List<DataPoint> processInput(File inputData) throws Exception{
 		inputDataPoints = DataParser.parseDataFile(inputData);
 		
 		List<DataPoint> fullSet = new ArrayList<DataPoint>();
