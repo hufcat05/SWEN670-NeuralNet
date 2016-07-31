@@ -44,6 +44,56 @@ public class DataParserTests {
 	}
 	
 	/**
+	 * Tests that an exception is thrown if a bad data file is given without enough elements
+	 */
+	@Test
+	public void testBadDataFileNotEnoughElements(){
+		try {
+			File temp = File.createTempFile("temp", ".csv");
+	
+		    // Delete temp file when program exits.
+		    temp.deleteOnExit();
+	
+		    // Write to temp file
+		    BufferedWriter out = new BufferedWriter(new FileWriter(temp));
+		    out.write("hi,1,2,3,4");
+		    
+		    out.close();
+		    
+		    List<DataPoint> points = DataParser.parseDataFile(temp);
+		    
+		    fail("No exception was thrown");
+		} catch (Exception ex){
+			assertTrue(true);
+		}
+	}
+	
+	/**
+	 * Tests that an exception is thrown if a bad data file is given with enough elements but a string where it shouldn't be
+	 */
+	@Test
+	public void testBadDataFileEnoughElementsWithBadString(){
+		try {
+			File temp = File.createTempFile("temp", ".csv");
+	
+		    // Delete temp file when program exits.
+		    temp.deleteOnExit();
+	
+		    // Write to temp file
+		    BufferedWriter out = new BufferedWriter(new FileWriter(temp));
+		    out.write("hi,1,2,3,4,5,6,7,8,9,0,1,2,3,string,5,6,7,8,9,0,1,2,3");
+		    
+		    out.close();
+		    
+		    List<DataPoint> points = DataParser.parseDataFile(temp);
+		    
+		    fail("No exception was thrown");
+		} catch (Exception ex){
+			assertTrue(true);
+		}
+	}
+	
+	/**
 	 * Tests that DataParser can return a well formed DataPoint given a specially formatted string
 	 */
 	@Test
@@ -57,6 +107,38 @@ public class DataParserTests {
 			assertTrue(point.getName().equals("phon_R01_S06_6"));
 		} catch (Exception ex){
 			fail("An exception was thrown: " + ex.getMessage());
+		}
+	}
+	
+	/**
+	 * Tests that an exception is thrown if a bad data string is given without enough elements
+	 */
+	@Test
+	public void testBadDataStringNotEnoughElements(){
+		try {
+			String val = "hi,this,is,wrong";
+		    
+		    DataPoint point = DataParser.parseDataString(val);
+		    
+		    fail("No exception was thrown");
+		} catch (Exception ex){
+			assertTrue(true);
+		}
+	}
+	
+	/**
+	 * Tests that an exception is thrown if a bad data string is given with enough elements but a string where it shouldn't be
+	 */
+	@Test
+	public void testBadDataStringEnoughElementsWithBadString(){
+		try {
+			String val = "hi,1,2,3,4,5,6,7,8,9,0,1,2,3,string,5,6,7,8,9,0,1,2,3";
+		    
+		    DataPoint point = DataParser.parseDataString(val);
+		    
+		    fail("No exception was thrown");
+		} catch (Exception ex){
+			assertTrue(true);
 		}
 	}
 	
@@ -93,7 +175,7 @@ public class DataParserTests {
 	}
 	
 	/**
-	 * Tests that the nomalize method accepts two inputs and returns a value between 0 and 1
+	 * Tests that the nomalize method accepts three inputs and returns a value between 0 and 1
 	 */
 	@Test
 	public void testNormalize(){

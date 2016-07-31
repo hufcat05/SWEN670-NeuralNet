@@ -180,7 +180,7 @@ public class NeuralInterface extends javax.swing.JFrame {
                      }
                      catch(Exception ex)
                      {
-                        JOptionPane.showMessageDialog(null, "The input file must be properly formatted");
+                        JOptionPane.showMessageDialog(null, "Not a valid training file.");
                         success = false;
                      }
                      
@@ -270,7 +270,7 @@ public class NeuralInterface extends javax.swing.JFrame {
 	             }
 	             catch(Exception ex)
 	             {
-	                 JOptionPane.showMessageDialog(null, "The input file must be properly formatted");
+	                 JOptionPane.showMessageDialog(null, "Not a valid data file.");
 	                 //when done, pass or fail, reset label
 	                 lblStatusData.setText("Ready To Process.");
 	             }
