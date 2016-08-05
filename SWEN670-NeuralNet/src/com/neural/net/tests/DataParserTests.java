@@ -1,6 +1,7 @@
 package com.neural.net.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -61,6 +62,7 @@ public class DataParserTests {
 		    out.close();
 		    
 		    List<DataPoint> points = DataParser.parseDataFile(temp);
+		    points.clear(); //suppressing warnings
 		    
 		    fail("No exception was thrown");
 		} catch (Exception ex){
@@ -86,6 +88,7 @@ public class DataParserTests {
 		    out.close();
 		    
 		    List<DataPoint> points = DataParser.parseDataFile(temp);
+		    points.clear(); //suppressing warnings
 		    
 		    fail("No exception was thrown");
 		} catch (Exception ex){
@@ -119,6 +122,7 @@ public class DataParserTests {
 			String val = "hi,this,is,wrong";
 		    
 		    DataPoint point = DataParser.parseDataString(val);
+		    point.getClass(); //suppressing warnings
 		    
 		    fail("No exception was thrown");
 		} catch (Exception ex){
@@ -135,6 +139,7 @@ public class DataParserTests {
 			String val = "hi,1,2,3,4,5,6,7,8,9,0,1,2,3,string,5,6,7,8,9,0,1,2,3";
 		    
 		    DataPoint point = DataParser.parseDataString(val);
+		    point.getClass(); //suppressing warnings
 		    
 		    fail("No exception was thrown");
 		} catch (Exception ex){
