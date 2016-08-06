@@ -190,10 +190,15 @@ public class NeuralInterface extends javax.swing.JFrame {
                      
                      trainingStatusBar.setVisible(false);
                      if (success){
-                    	 lblStatusData.setText("Ready to Process.");
+                    	 lblStatusData.setText("Ready to Process");
                     	 btnProcess.setEnabled(true);
                      } else {
-                    	 lblStatusData.setText("Ready to Train");
+                    	 //if training fails but the NN was already trained (as evidenced by the process button's
+                    	 //enabled status, status message should say ready to process
+                    	 if(btnProcess.isEnabled())               		 
+                    		 lblStatusData.setText("Ready to Process");
+                    	 else
+                    		 lblStatusData.setText("Ready to Train");
                      }
                     
                      
@@ -246,7 +251,13 @@ public class NeuralInterface extends javax.swing.JFrame {
 	             
 	             try //to process
 	             {
-	            	if (!output.exists()) {
+	            	
+					
+					List<DataPoint> outputDataPoints = controller.processInput(inputFile);
+					 
+					DefaultTableModel model = ((DefaultTableModel)outputTable.getModel());
+					 
+					if (!output.exists()) {
 	 					output.createNewFile();
 	 				}
 
@@ -256,10 +267,6 @@ public class NeuralInterface extends javax.swing.JFrame {
 					bw.write("Name, Expected Result, Network Result");
 					bw.newLine();
 					
-					List<DataPoint> outputDataPoints = controller.processInput(inputFile);
-					 
-					DefaultTableModel model = ((DefaultTableModel)outputTable.getModel());
-					 
 					int rowCount = model.getRowCount();
 					    //Remove rows one by one from the end of the table
 					for (int i = rowCount - 1; i >= 0; i--) {
