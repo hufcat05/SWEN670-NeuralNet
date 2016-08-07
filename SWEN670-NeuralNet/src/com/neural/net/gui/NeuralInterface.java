@@ -181,6 +181,7 @@ public class NeuralInterface extends javax.swing.JFrame {
                      {
                     	 lblStatusData.setText("Training...");
                     	 trainingStatusBar.setVisible(true);
+                    	 runTrainingFile(file);
                      }
                      catch(Exception ex)
                      {
