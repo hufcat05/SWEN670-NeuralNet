@@ -63,6 +63,8 @@ public class NetworkOutputTest {
 				assertTrue(sCurrentLine.split(",").length == 3);
 				assertTrue(sCurrentLine.equals("Name, Expected Result, Network Result") || ((sCurrentLine.split(",")[1].equals("0") || sCurrentLine.split(",")[1].equals("1")) && (Double.parseDouble(sCurrentLine.split(",")[2]) >= 0) || Double.parseDouble(sCurrentLine.split(",")[2]) <= 1));
 			}
+			
+			assertTrue(testOut.exists());
 
 			
 			br.close();
