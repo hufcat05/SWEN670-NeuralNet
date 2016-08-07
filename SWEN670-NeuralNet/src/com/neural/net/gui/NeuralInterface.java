@@ -38,6 +38,7 @@ public class NeuralInterface extends javax.swing.JFrame {
      * Creates new form NeuralInterface
      */
     public NeuralInterface() {
+    	controller = new NeuralNetController();
         initComponents();
     }
 
@@ -180,7 +181,6 @@ public class NeuralInterface extends javax.swing.JFrame {
                      {
                     	 lblStatusData.setText("Training...");
                     	 trainingStatusBar.setVisible(true);
-                        controller.initializeTraining(file, ui);
                      }
                      catch(Exception ex)
                      {
@@ -223,6 +223,10 @@ public class NeuralInterface extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnTrainMouseClicked
+    
+    public void runTrainingFile(File file) throws Exception{
+    	controller.initializeTraining(file, ui);
+    }
 
     private void btnProcessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProcessMouseClicked
         if (btnProcess.isEnabled()){
@@ -251,33 +255,7 @@ public class NeuralInterface extends javax.swing.JFrame {
 	             
 	             try //to process
 	             {
-	            	
-					
-					List<DataPoint> outputDataPoints = controller.processInput(inputFile);
-					 
-					DefaultTableModel model = ((DefaultTableModel)outputTable.getModel());
-					 
-					if (!output.exists()) {
-	 					output.createNewFile();
-	 				}
-
-					FileWriter fw = new FileWriter(output.getAbsoluteFile());
-					BufferedWriter bw = new BufferedWriter(fw);
-					
-					bw.write("Name, Expected Result, Network Result");
-					bw.newLine();
-					
-					int rowCount = model.getRowCount();
-					    //Remove rows one by one from the end of the table
-					for (int i = rowCount - 1; i >= 0; i--) {
-					    model.removeRow(i);
-					}
-					for (DataPoint point : outputDataPoints){
-					    model.addRow(new Object[]{point.getName(),point.getStatus(), point.getResult()});
-					    bw.write(point.getName() + ", " + point.getStatus() + ", " + point.getResult());
-					    bw.newLine();
-					}
-					bw.close();
+	            	runInputData(inputFile, output);
 	             }
 	             catch(Exception ex)
 	             {
@@ -296,6 +274,33 @@ public class NeuralInterface extends javax.swing.JFrame {
         }  
     }//GEN-LAST:event_btnProcessMouseClicked
     
+    public void runInputData(File inputFile, File output) throws Exception{
+    	List<DataPoint> outputDataPoints = controller.processInput(inputFile);
+		 
+		DefaultTableModel model = ((DefaultTableModel)outputTable.getModel());
+		 
+		if (!output.exists()) {
+				output.createNewFile();
+			}
+
+		FileWriter fw = new FileWriter(output.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		bw.write("Name, Expected Result, Network Result");
+		bw.newLine();
+		
+		int rowCount = model.getRowCount();
+		    //Remove rows one by one from the end of the table
+		for (int i = rowCount - 1; i >= 0; i--) {
+		    model.removeRow(i);
+		}
+		for (DataPoint point : outputDataPoints){
+		    model.addRow(new Object[]{point.getName(),point.getStatus(), point.getResult()});
+		    bw.write(point.getName() + ", " + point.getStatus() + ", " + point.getResult());
+		    bw.newLine();
+		}
+		bw.close();
+    }
     
     public void updateStatusBar(int value){
     	trainingStatusBar.setValue(value);
@@ -308,7 +313,6 @@ public class NeuralInterface extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-    	controller = new NeuralNetController();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
